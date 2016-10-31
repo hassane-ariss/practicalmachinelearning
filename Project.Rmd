@@ -9,6 +9,7 @@ date: "30 octobre 2016"
 GitHub repo: "https://github.com/hassane-ariss/practicalmachinelearning"
 
 ##Introduction
+One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants.
 The goal of the project is to predict the manner in which they did the exercise. This is the "classe" variable in the training set. 
 Any of the other variables may be used to predict with. This report is describing how the model was build, how cross validation was ued , and what are the choices made.
 

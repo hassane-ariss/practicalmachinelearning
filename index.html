@@ -63,43 +63,201 @@ img {
 
 <div id="practical-machine-learning-project" class="section level1">
 <h1>Practical Machine Learning Project</h1>
-<div id="instructions" class="section level3">
-<h3>Instructions</h3>
-<p>One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants.</p>
-<div id="review-criteria" class="section level4">
-<h4>Review criteria</h4>
-<div id="what-you-should-submit" class="section level5">
-<h5>What you should submit</h5>
-<p>The goal of your project is to predict the manner in which they did the exercise. This is the “classe” variable in the training set. You may use any of the other variables to predict with. You should create a report describing how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases.</p>
+<p>Project report for Practic Machine Learning course on coursera</p>
+<p>author: “Hassane ARISS” date: “30 octobre 2016” GitHub repo: “<a href="https://github.com/hassane-ariss/practicalmachinelearning" class="uri">https://github.com/hassane-ariss/practicalmachinelearning</a>”</p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. The goal of the project is to predict the manner in which they did the exercise. This is the “classe” variable in the training set. Any of the other variables may be used to predict with. This report is describing how the model was build, how cross validation was ued , and what are the choices made.</p>
 </div>
-<div id="peer-review-portion" class="section level5">
-<h5>Peer Review Portion</h5>
-<p>Your submission for the Peer Review portion should consist of a link to a Github repo with your R markdown and compiled HTML file describing your analysis. Please constrain the text of the writeup to &lt; 2000 words and the number of figures to be less than 5. It will make it easier for the graders if you submit a repo with a gh-pages branch so the HTML page can be viewed online (and you always want to make it easy on graders :-).</p>
-</div>
-<div id="course-project-prediction-quiz-portion" class="section level5">
-<h5>Course Project Prediction Quiz Portion</h5>
-<p>Apply your machine learning algorithm to the 20 test cases available in the test data above and submit your predictions in appropriate format to the Course Project Prediction Quiz for automated grading.</p>
-</div>
-<div id="reproducibility" class="section level5">
-<h5>Reproducibility</h5>
-<p>Due to security concerns with the exchange of R code, your code will not be run during the evaluation by your classmates. Please be sure that if they download the repo, they will be able to view the compiled HTML version of your analysis.</p>
-</div>
-</div>
-<div id="prediction-assignment-writeup" class="section level4">
-<h4>Prediction Assignment Writeup</h4>
-<div id="background" class="section level5">
-<h5>Background</h5>
-<p>Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: <a href="http://groupware.les.inf.puc-rio.br/har" class="uri">http://groupware.les.inf.puc-rio.br/har</a> (see the section on the Weight Lifting Exercise Dataset).</p>
-</div>
-<div id="data" class="section level5">
-<h5>Data</h5>
+<div id="data-sources" class="section level2">
+<h2>Data Sources</h2>
 <p>The training data for this project are available here:</p>
 <p><a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv" class="uri">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv</a></p>
 <p>The test data are available here:</p>
 <p><a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv" class="uri">https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv</a></p>
-<p>The data for this project come from this source: <a href="http://groupware.les.inf.puc-rio.br/har" class="uri">http://groupware.les.inf.puc-rio.br/har</a>. If you use the document you create for this class for any purpose please cite them as they have been very generous in allowing their data to be used for this kind of assignment.</p>
+<p>The data for this project comes from this original source: <a href="http://groupware.les.inf.puc-rio.br/har" class="uri">http://groupware.les.inf.puc-rio.br/har</a>. If you use the document you create for this class for any purpose please cite them as they have been very generous in allowing their data to be used for this kind of assignment.</p>
+<p>Please Note that I the code I use loads the data directly from the URL provided, so that you are not required to download the file to your environment. Please customize the code to your specific needs.</p>
+</div>
+<div id="reproduceablity" class="section level2">
+<h2>Reproduceablity</h2>
+<p>In order to reproduce the same results, you need a certain set of packages, as well as setting a pseudo random seed equal to the one I used. *Note:To install, for instance, the caret package in R, run this command: install.packages(“caret”)</p>
+<p>The following Libraries were used for this project, which you should install - if not done yet - and load on your working environment.</p>
+<pre class="r"><code>library(caret)</code></pre>
+<pre><code>## Loading required package: lattice
+## Loading required package: ggplot2</code></pre>
+<pre class="r"><code>set.seed(12345)</code></pre>
+<div id="loading-the-data" class="section level3">
+<h3>Loading the Data</h3>
+<pre><code>PML_Training = read.csv('Data/pml-training.csv', header = TRUE , na.strings=c(&quot;NA&quot;,&quot;#DIV/0!&quot;,&quot;&quot;))
+PML_Testing = read.csv('Data/pml-testing.csv', header = TRUE , na.strings=c(&quot;NA&quot;,&quot;#DIV/0!&quot;,&quot;&quot;))
+</code></pre>
+</div>
+<div id="partitionning-the-training-set" class="section level3">
+<h3>Partitionning the training set</h3>
+<pre><code>inTrain &lt;- createDataPartition(y=PML_Training$classe, p=0.6, list=FALSE)
+myTraining &lt;- PML_Training[inTrain, ]; myTesting &lt;- PML_Training[-inTrain, ]
+</code></pre>
 </div>
 </div>
+<div id="cleaning" class="section level2">
+<h2>Cleaning</h2>
+<div id="cleaning-training-dataset" class="section level4">
+<h4>Cleaning Training dataset</h4>
+<pre><code>############## Removing nearzerovariance predictors ###############
+
+myDataNZV &lt;- nearZeroVar(myTraining)
+if(length(myDataNZV) &gt; 0) myTraining &lt;- myTraining[,-myDataNZV]</code></pre>
+<pre><code>########## Removing ID column to not being considered in training ##########
+
+myTraining &lt;- myTraining [c(-1)]
+</code></pre>
+<pre><code>##########  Removing predictors (columns) with NA ##################
+
+cols.without.na &lt;- colSums(is.na(myTraining)) == 0
+myTraining &lt;- myTraining[, cols.without.na]
+</code></pre>
+</div>
+<div id="cleaning-test-dataset" class="section level4">
+<h4>Cleaning Test dataset</h4>
+<pre><code>mytraining_cols &lt;- colnames(myTraining)
+myTesting &lt;- myTesting[mytraining_cols]</code></pre>
+</div>
+</div>
+<div id="creating-models" class="section level2">
+<h2>Creating models</h2>
+<div id="using-lda-algorithm" class="section level4">
+<h4>Using LDA algorithm</h4>
+<pre><code>fitlda &lt;- train(classe ~ . , data= myTraining , method = &quot;lda&quot;)</code></pre>
+<pre><code>predlda &lt;- predict(fitlda, myTesting)</code></pre>
+<p>Evaluation the performance against the test set</p>
+<pre><code>confusionMatrix(predlda,myTesting$classe)
+
+Confusion Matrix and Statistics
+
+          Reference
+Prediction    A    B    C    D    E
+         A 2025  162    3    0    0
+         B  183 1112  120    1    0
+         C   24  234 1212  135    3
+         D    0   10   31 1076  135
+         E    0    0    2   74 1304
+
+Overall Statistics
+                                          
+               Accuracy : 0.8576          
+                 95% CI : (0.8497, 0.8653)
+    No Information Rate : 0.2845          
+    P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+                                          
+                  Kappa : 0.8201          
+ Mcnemar's Test P-Value : NA              
+
+Statistics by Class:
+
+                     Class: A Class: B Class: C Class: D Class: E
+Sensitivity            0.9073   0.7325   0.8860   0.8367   0.9043
+Specificity            0.9706   0.9520   0.9389   0.9732   0.9881
+Pos Pred Value         0.9247   0.7853   0.7537   0.8594   0.9449
+Neg Pred Value         0.9634   0.9369   0.9750   0.9682   0.9787
+Prevalence             0.2845   0.1935   0.1744   0.1639   0.1838
+Detection Rate         0.2581   0.1417   0.1545   0.1371   0.1662
+Detection Prevalence   0.2791   0.1805   0.2049   0.1596   0.1759
+Balanced Accuracy      0.9389   0.8423   0.9124   0.9049   0.9462
+</code></pre>
+<p>The accuracy of this model is 85.76% , an error of more than 4%</p>
+</div>
+<div id="using-gbm-algorithm" class="section level4">
+<h4>Using GBM algorithm</h4>
+<pre><code>fitgbm &lt;- train(classe ~ . , data= myTraining , method = &quot;gbm&quot;)</code></pre>
+<pre><code>predgbm &lt;- predict(fitgbm, myTesting)</code></pre>
+<p>Evaluation the performance against the test set</p>
+<pre><code>confusionMatrix(predgbm, myTesting$classe)
+
+Confusion Matrix and Statistics
+
+          Reference
+Prediction    A    B    C    D    E
+         A 2231    4    0    0    0
+         B    1 1512    1    0    0
+         C    0    2 1361    7    0
+         D    0    0    6 1270    0
+         E    0    0    0    9 1442
+
+Overall Statistics
+                                          
+               Accuracy : 0.9962          
+                 95% CI : (0.9945, 0.9974)
+    No Information Rate : 0.2845          
+    P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+                                          
+                  Kappa : 0.9952          
+ Mcnemar's Test P-Value : NA              
+
+Statistics by Class:
+
+                     Class: A Class: B Class: C Class: D Class: E
+Sensitivity            0.9996   0.9960   0.9949   0.9876   1.0000
+Specificity            0.9993   0.9997   0.9986   0.9991   0.9986
+Pos Pred Value         0.9982   0.9987   0.9934   0.9953   0.9938
+Neg Pred Value         0.9998   0.9991   0.9989   0.9976   1.0000
+Prevalence             0.2845   0.1935   0.1744   0.1639   0.1838
+Detection Rate         0.2843   0.1927   0.1735   0.1619   0.1838
+Detection Prevalence   0.2849   0.1930   0.1746   0.1626   0.1849
+Balanced Accuracy      0.9994   0.9979   0.9967   0.9933   0.9993</code></pre>
+<p>The accuracy of this model is 99.62% , an error of less than 1%, wich is pretty good.</p>
+</div>
+<div id="using-rf-algorithm" class="section level4">
+<h4>Using RF algorithm</h4>
+<pre><code>fitRf &lt;- train(classe ~ . , data= myTraining , method = &quot;rf&quot;)</code></pre>
+<pre><code>predRf &lt;- predict(fitRf, myTesting)</code></pre>
+<p>Evaluation the performance against the test set</p>
+<pre><code>confusionMatrix(predRf,myTesting$classe)
+
+Confusion Matrix and Statistics
+
+          Reference
+Prediction    A    B    C    D    E
+         A 2232    1    0    0    0
+         B    0 1517    2    0    0
+         C    0    0 1366    3    0
+         D    0    0    0 1283    0
+         E    0    0    0    0 1442
+
+Overall Statistics
+                                          
+               Accuracy : 0.9992          
+                 95% CI : (0.9983, 0.9997)
+    No Information Rate : 0.2845          
+    P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+                                          
+                  Kappa : 0.999           
+ Mcnemar's Test P-Value : NA              
+
+Statistics by Class:
+
+                     Class: A Class: B Class: C Class: D Class: E
+Sensitivity            1.0000   0.9993   0.9985   0.9977   1.0000
+Specificity            0.9998   0.9997   0.9995   1.0000   1.0000
+Pos Pred Value         0.9996   0.9987   0.9978   1.0000   1.0000
+Neg Pred Value         1.0000   0.9998   0.9997   0.9995   1.0000
+Prevalence             0.2845   0.1935   0.1744   0.1639   0.1838
+Detection Rate         0.2845   0.1933   0.1741   0.1635   0.1838
+Detection Prevalence   0.2846   0.1936   0.1745   0.1635   0.1838
+Balanced Accuracy      0.9999   0.9995   0.9990   0.9988   1.0000
+</code></pre>
+<p>The accuracy of this model is 99.92% , an error of less than 0.1%, wich is the best of the tree algorithms.</p>
+</div>
+</div>
+<div id="predicting-the-project-cases" class="section level2">
+<h2>Predicting the Project cases</h2>
+<p>As the Random Forest is the more accurate algorithm to predict based on the training set, it will be used to predict the test cases of the project</p>
+<p>Test data will be arranged to fit the used model (removing the unecessary columns)</p>
+<pre><code>mytesting_cols &lt;- mytraining_cols[-58]
+real_test &lt;- PML_Testing[mytesting_cols]</code></pre>
+<p>predict the values based on the RF model</p>
+<pre><code>predict(fitRf,real_test)
+ [1] B A B A A E D B A A B C B A E E A B B B
+Levels: A B C D E</code></pre>
 </div>
 </div>
 
